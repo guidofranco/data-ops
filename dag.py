@@ -21,9 +21,16 @@ def transform_movies_data():
     """
     file_name = "title.basics.tsv.gz"
     url_file = f"{url_base}/{file_name}"
+
+    # columnas requeridas del dataset
+    req_cols = [
+        "tconst", "primaryTitle", "originalTitle",
+        "startYear", "runtimeMinutes", "genres"]
+
     titles_df = pd.read_csv(
                     url_file,
                     sep="\t", encoding="utf-8",
+                    usecols=req_cols,
                     dtype="object", na_values=r"\N")
 
     # obtener solos los titulo de tipo "pelicula"
@@ -33,12 +40,6 @@ def transform_movies_data():
     # eliminar valores nulos de algunas columnas
     movies_df = movies_df.dropna(
                             subset=["startYear", "runtimeMinutes", "genres"])
-
-    # obtener solo algunas columnas del dataframe original
-    final_cols = [
-        "tconst", "primaryTitle", "originalTitle",
-        "startYear", "runtimeMinutes", "genres"]
-    movies_df = movies_df.loc[:, final_cols]
 
     # filtrar las peliculas estrenadas durante el 2015 y el 2020 inclusive
     movies_df["startYear"] = movies_df["startYear"].astype("int")
@@ -66,7 +67,6 @@ def transform_crew_data():
     crew_df = pd.read_csv(
                         url_file,
                         sep="\t", encoding="utf-8",
-                        usecols=["tconst", "directors", "writers"],
                         na_values=r"\N")
 
     directors_df = crew_df[["tconst", "directors"]]
