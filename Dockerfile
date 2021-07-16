@@ -4,9 +4,7 @@ ENV AIRFLOW_HOME="/home/airflow"
 
 RUN mkdir /home/airflow/dags
 
-RUN mkdir /home/airflow/data
 RUN mkdir /home/airflow/staging
-RUN mkdir /home/airflow/output
 
 COPY dag.py /home/airflow/dags
 
