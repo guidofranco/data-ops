@@ -86,10 +86,10 @@ def transform_crew_data():
     # Guardar ambos dataframes en un archivo csv en el directorio staging
     directors_df.to_csv(
                     f"{home_dir}/staging/directors.csv",
-                    sep=";", index=None)
+                    sep=";", index=None, chunksize=500000)
     writers_df.to_csv(
                     f"{home_dir}/staging/writers.csv",
-                    sep=";", index=None)
+                    sep=";", index=None, chunksize=500000)
 
 
 def join_data():
