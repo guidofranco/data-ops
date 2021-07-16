@@ -61,7 +61,7 @@ def transform_crew_data():
     Leer y transformar los datos sobre directores y escritores
     y guardar el resultado en el directorio staging
     """
-    file_name = "title.basics.tsv.gz"
+    file_name = "title.crew.tsv.gz"
     url_file = f"{url_base}/{file_name}"
     crew_df = pd.read_csv(
                         url_file,
