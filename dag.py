@@ -24,7 +24,7 @@ def transform_movies_data():
 
     # columnas requeridas del dataset
     req_cols = [
-        "tconst", "primaryTitle", "originalTitle",
+        "tconst", "titleType", "primaryTitle", "originalTitle",
         "startYear", "runtimeMinutes", "genres"]
 
     titles_df = pd.read_csv(
@@ -36,7 +36,8 @@ def transform_movies_data():
     # obtener solos los titulo de tipo "pelicula"
     movies_mask = titles_df["titleType"] == "movie"
     movies_df = titles_df.loc[movies_mask]
-
+    movies_df.drop(columns="titleType")
+    
     # eliminar valores nulos de algunas columnas
     movies_df = movies_df.dropna(
                             subset=["startYear", "runtimeMinutes", "genres"])
