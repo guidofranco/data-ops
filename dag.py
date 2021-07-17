@@ -52,7 +52,8 @@ def transform_movies_data():
 
     # Serializar el dataframe en un archivo pickle en el directorio staging
     movies_df.to_pickle(
-        f"{home_dir}/staging/movies_basics.pkl.gz")
+        f"{home_dir}/staging/movies_basics.pkl",
+        compression=None)
 
 
 def transform_crew_data():
@@ -83,9 +84,11 @@ def transform_crew_data():
 
     # Serializar ambos dataframes en un archivos pkl en el directorio staging
     directors_df.to_pickle(
-                    f"{home_dir}/staging/directors.pkl.gz")
+                    f"{home_dir}/staging/directors.pkl",
+                    compression=None)
     writers_df.to_pickle(
-                    f"{home_dir}/staging/writers.pkl.gz")
+                    f"{home_dir}/staging/writers.pkl",
+                    compression=None)
 
 
 def join_data():
@@ -96,13 +99,13 @@ def join_data():
     - rating promedio y cantidad de votos recibidos
     """
     directors_df = pd.read_pickle(
-                        f"{home_dir}/staging/writers.pkl.gz")
+                        f"{home_dir}/staging/writers.pkl")
 
     writers_df = pd.read_pickle(
-                        f"{home_dir}/staging/directors.pkl.gz")
+                        f"{home_dir}/staging/directors.pkl")
 
     basics_df = pd.read_pickle(
-                        f"{home_dir}/staging/movies_basics.pkl.gz/", sep=";")
+                        f"{home_dir}/staging/movies_basics.pkl")
 
     ratings_df = pd.read_csv(
                         f"{url_base}/title.ratings.tsv.gz",
