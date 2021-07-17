@@ -7,8 +7,6 @@ from datetime import timedelta
 
 import pandas as pd
 import os
-import requests
-
 
 home_dir = os.environ["HOME"]
 url_base = "https://datasets.imdbws.com"
@@ -16,13 +14,13 @@ url_base = "https://datasets.imdbws.com"
 
 def transform_movies_data():
     """
-    Obtener y transformar los datos de peliculas
+    Obtener y transformar los datos del archivo title.basic.tsv.gz
     y guardar el resultado en el directorio stating
     """
     file_name = "title.basics.tsv.gz"
     url_file = f"{url_base}/{file_name}"
 
-    # columnas requeridas del dataset
+    # columnas a utilizar del dataset
     req_cols = [
         "tconst", "titleType", "primaryTitle", "originalTitle",
         "startYear", "runtimeMinutes", "genres"]
@@ -52,10 +50,9 @@ def transform_movies_data():
     movies_df["genres"] = movies_df["genres"].str.split(",")
     movies_df = movies_df.explode("genres")
 
-    # Guardar el resultado en un archivo csv en el directorio staging
-    movies_df.to_csv(
-        f"{home_dir}/staging/movies_basics.csv",
-        index=None, sep=";")
+    # Serializar el dataframe en un archivo pickle en el directorio staging
+    movies_df.to_pickle(
+        f"{home_dir}/staging/movies_basics.pkl.gz")
 
 
 def transform_crew_data():
@@ -84,13 +81,11 @@ def transform_crew_data():
     directors_df = directors_df.explode("directors")
     writers_df = writers_df.explode("writers")
 
-    # Guardar ambos dataframes en un archivo csv en el directorio staging
-    directors_df.to_csv(
-                    f"{home_dir}/staging/directors.csv",
-                    sep=";", index=None, chunksize=500000)
-    writers_df.to_csv(
-                    f"{home_dir}/staging/writers.csv",
-                    sep=";", index=None, chunksize=500000)
+    # Serializar ambos dataframes en un archivos pkl en el directorio staging
+    directors_df.to_pickle(
+                    f"{home_dir}/staging/directors.pkl.gz")
+    writers_df.to_pickle(
+                    f"{home_dir}/staging/writers.pkl.gz")
 
 
 def join_data():
@@ -100,14 +95,14 @@ def join_data():
     - los directores y escritores
     - rating promedio y cantidad de votos recibidos
     """
-    directors_df = pd.read_csv(
-                        f"{home_dir}/staging/writers.csv", sep=";")
+    directors_df = pd.read_pickle(
+                        f"{home_dir}/staging/writers.pkl.gz")
 
-    writers_df = pd.read_csv(
-                        f"{home_dir}/staging/directors.csv", sep=";")
+    writers_df = pd.read_pickle(
+                        f"{home_dir}/staging/directors.pkl.gz")
 
-    basics_df = pd.read_csv(
-                        f"{home_dir}/staging/movies_basics.csv", sep=";")
+    basics_df = pd.read_pickle(
+                        f"{home_dir}/staging/movies_basics.pkl.gz/", sep=";")
 
     ratings_df = pd.read_csv(
                         f"{url_base}/title.ratings.tsv.gz",
