@@ -35,7 +35,7 @@ def transform_movies_data():
     movies_mask = titles_df["titleType"] == "movie"
     movies_df = titles_df.loc[movies_mask]
     movies_df.drop(columns="titleType")
-    
+
     # eliminar valores nulos de algunas columnas
     movies_df = movies_df.dropna(
                             subset=["startYear", "runtimeMinutes", "genres"])
@@ -44,7 +44,7 @@ def transform_movies_data():
     movies_df["startYear"] = movies_df["startYear"].astype("int")
     movies_df["runtimeMinutes"] = movies_df["runtimeMinutes"].astype("int")
 
-    # filtrar las peliculas estrenadas durante el 2015 y el 2020 inclusive    
+    # filtrar las peliculas estrenadas durante el 2015 y el 2020 inclusive
     year_mask = (movies_df["startYear"] >= 2015) & \
                 (movies_df["startYear"] <= 2020)
     movies_df = movies_df[year_mask]
@@ -138,21 +138,20 @@ def aggregate_data(joined_df):
     - cantidad de directores distintos,
     - cantidad de escritores distintos
     """
-    target_df = joined_df \
-                    .groupby(["startYear", "genres"]) \
-                    .agg({
-                        "numVotes": "sum",
-                        "averageRating": "mean",
-                        "runtimeMinutes": "mean",
-                        "directors": "nunique",
-                        "writers": "nunique"
-                        }) \
-                    .rename(
-                        columns={
-                            "directors": "numDirectors",
-                            "writers": "numWriters"
-                            }) \
-                    .round(2)
+    target_df = joined_df.groupby(
+                            ["startYear", "genres"]
+                        ).agg({
+                            "numVotes": "sum",
+                            "averageRating": "mean",
+                            "runtimeMinutes": "mean",
+                            "directors": "nunique",
+                            "writers": "nunique"
+                            }
+                        ).rename(
+                            columns={
+                                "directors": "numDirectors",
+                                "writers": "numWriters"}
+                        ).round(2)
 
     target_df.to_csv(f"{home_dir}/results.csv", sep=";")
 
