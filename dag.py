@@ -40,8 +40,11 @@ def transform_movies_data():
     movies_df = movies_df.dropna(
                             subset=["startYear", "runtimeMinutes", "genres"])
 
-    # filtrar las peliculas estrenadas durante el 2015 y el 2020 inclusive
+    # convertir algunas columnas a tipo entero
     movies_df["startYear"] = movies_df["startYear"].astype("int")
+    movies_df["runtimeMinutes"] = movies_df["runtimeMinutes"].astype("int")
+
+    # filtrar las peliculas estrenadas durante el 2015 y el 2020 inclusive    
     year_mask = (movies_df["startYear"] >= 2015) & \
                 (movies_df["startYear"] <= 2020)
     movies_df = movies_df[year_mask]
@@ -99,13 +102,16 @@ def join_data():
     - rating promedio y cantidad de votos recibidos
     """
     directors_df = pd.read_pickle(
-                        f"{home_dir}/staging/writers.pkl")
+                        f"{home_dir}/staging/writers.pkl",
+                        compression=None)
 
     writers_df = pd.read_pickle(
-                        f"{home_dir}/staging/directors.pkl")
+                        f"{home_dir}/staging/directors.pkl",
+                        compression=None)
 
     basics_df = pd.read_pickle(
-                        f"{home_dir}/staging/movies_basics.pkl")
+                        f"{home_dir}/staging/movies_basics.pkl",
+                        compression=None)
 
     ratings_df = pd.read_csv(
                         f"{url_base}/title.ratings.tsv.gz",
