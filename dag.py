@@ -6,6 +6,7 @@ from airflow.utils.dates import days_ago
 from datetime import timedelta
 
 import pandas as pd
+import feather
 import os
 
 home_dir = os.environ["HOME"]
@@ -53,11 +54,10 @@ def transform_movies_data():
     movies_df["genres"] = movies_df["genres"].str.split(",")
     movies_df = movies_df.explode("genres")
 
-    # Serializar el dataframe en un archivo pickle en el directorio staging
-    movies_df.to_pickle(
-        f"{home_dir}/staging/movies_basics.pkl",
-        compression=None)
-
+    #Persistir el dataframe en un archivo feather en el directorio staging
+    feather.write_dataframe(
+                        movies_df,
+                        f"{home_dir}/staging/movies_basics.feather")
 
 def transform_crew_data():
     """
@@ -86,12 +86,12 @@ def transform_crew_data():
     writers_df = writers_df.explode("writers")
 
     # Serializar ambos dataframes en un archivos pkl en el directorio staging
-    directors_df.to_pickle(
-                    f"{home_dir}/staging/directors.pkl",
-                    compression=None)
-    writers_df.to_pickle(
-                    f"{home_dir}/staging/writers.pkl",
-                    compression=None)
+    feather.write_dataframe(
+                    directors_df,
+                    f"{home_dir}/staging/directors.feather")
+    feather.write_dataframe(
+                    writers_df,
+                    f"{home_dir}/staging/writers.feather")
 
 
 def join_data():
@@ -101,19 +101,16 @@ def join_data():
     - los directores y escritores
     - rating promedio y cantidad de votos recibidos
     """
-    directors_df = pd.read_pickle(
-                        f"{home_dir}/staging/writers.pkl",
-                        compression=None)
+    directors_df = feather.read_feather(
+                        f"{home_dir}/staging/writers.feather")
 
-    writers_df = pd.read_pickle(
-                        f"{home_dir}/staging/directors.pkl",
-                        compression=None)
+    writers_df = feather.read_feather(
+                        f"{home_dir}/staging/directors.feather")
 
-    basics_df = pd.read_pickle(
-                        f"{home_dir}/staging/movies_basics.pkl",
-                        compression=None)
+    basics_df = feather.read_feather(
+                        f"{home_dir}/staging/movies_basics.feather")
 
-    ratings_df = pd.read_csv(
+    ratings_df = feather.read_csv(
                         f"{url_base}/title.ratings.tsv.gz",
                         sep="\t", encoding="utf-8")
 
