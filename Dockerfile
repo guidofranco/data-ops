@@ -2,6 +2,8 @@ FROM apache/airflow:1.10.10
 
 ENV AIRFLOW_HOME="/home/airflow"
 
+RUN pip install airflow
+
 RUN mkdir /home/airflow/dags
 
 RUN mkdir /home/airflow/staging
