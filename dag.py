@@ -110,7 +110,7 @@ def join_data():
     basics_df = feather.read_dataframe(
                         f"{home_dir}/staging/movies_basics.feather")
 
-    ratings_df = feather.read_csv(
+    ratings_df = pd.read_csv(
                         f"{url_base}/title.ratings.tsv.gz",
                         sep="\t", encoding="utf-8")
 
