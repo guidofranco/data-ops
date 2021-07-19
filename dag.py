@@ -101,13 +101,13 @@ def join_data():
     - los directores y escritores
     - rating promedio y cantidad de votos recibidos
     """
-    directors_df = feather.read_feather(
+    directors_df = feather.read_dataframe(
                         f"{home_dir}/staging/writers.feather")
 
-    writers_df = feather.read_feather(
+    writers_df = feather.read_dataframe(
                         f"{home_dir}/staging/directors.feather")
 
-    basics_df = feather.read_feather(
+    basics_df = feather.read_dataframe(
                         f"{home_dir}/staging/movies_basics.feather")
 
     ratings_df = feather.read_csv(
