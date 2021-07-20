@@ -152,7 +152,7 @@ def aggregate_data(joined_df):
                                 "writers": "numWriters"}
                         ).round(2)
 
-    target_df.to_csv(f"{home_dir}/results.csv", sep=";")
+    target_df.to_csv(f"{home_dir}/resultados.csv", sep=";")
 
 
 def join_and_agg_data():
