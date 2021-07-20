@@ -118,13 +118,13 @@ def join_data():
 
     joined_df = basics_df.join(
                         ratings_df.set_index("tconst"),
-                        on="tconst", how="left"
+                        on="tconst", how="inner"
                         ).join(
                         directors_df.set_index("tconst"),
-                        on="tconst", how="left"
+                        on="tconst", how="inner"
                         ).join(
                         writers_df.set_index("tconst"),
-                        on="tconst", how="left")
+                        on="tconst", how="inner")
 
     return joined_df
 
