@@ -162,7 +162,7 @@ def join_and_agg_data():
 
 default_args = {
     "owner": "Guido Franco",
-    "email": "guidonfranco@gmail.com"
+    "email": "guidonfranco@gmail.com",
     "depends_on_past": False,
     "start_date": days_ago(1),
 }
