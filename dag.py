@@ -161,12 +161,13 @@ def join_and_agg_data():
 
 
 default_args = {
-    'depends_on_past': False,
-    'start_date': days_ago(1),
+    "owner": "Guido Franco"
+    "depends_on_past": False,
+    "start_date": days_ago(1),
 }
 
 with DAG(
-        'datathon',
+        "datathon",
         default_args=default_args,
         schedule_interval=timedelta(days=1)
         ) as dag:
