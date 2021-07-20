@@ -161,7 +161,7 @@ def join_and_agg_data():
 
 
 default_args = {
-    "owner": "Guido Franco"
+    "owner": "Guido Franco",
     "depends_on_past": False,
     "start_date": days_ago(1),
 }
