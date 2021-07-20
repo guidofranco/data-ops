@@ -54,10 +54,11 @@ def transform_movies_data():
     movies_df["genres"] = movies_df["genres"].str.split(",")
     movies_df = movies_df.explode("genres")
 
-    #Persistir el dataframe en un archivo feather en el directorio staging
+    # Serializar dataframe en un archivo feather en el directorio staging
     feather.write_dataframe(
                         movies_df,
                         f"{home_dir}/staging/movies_basics.feather")
+
 
 def transform_crew_data():
     """
@@ -85,10 +86,11 @@ def transform_crew_data():
     directors_df = directors_df.explode("directors")
     writers_df = writers_df.explode("writers")
 
-    # Serializar ambos dataframes en un archivos pkl en el directorio staging
+    # Serializar dataframes en archivos feather en el directorio staging
     feather.write_dataframe(
                     directors_df,
                     f"{home_dir}/staging/directors.feather")
+
     feather.write_dataframe(
                     writers_df,
                     f"{home_dir}/staging/writers.feather")
