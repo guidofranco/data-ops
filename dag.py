@@ -140,9 +140,9 @@ def aggregate_data(joined_df):
     target_df = joined_df.groupby(
                             ["startYear", "genres"]
                         ).agg({
-                            "numVotes": "sum",
-                            "averageRating": "mean",
                             "runtimeMinutes": "mean",
+                            "averageRating": "mean",
+                            "numVotes": "sum",
                             "directors": "nunique",
                             "writers": "nunique"
                             }
